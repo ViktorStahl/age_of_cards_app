@@ -54,7 +54,7 @@ class WarbandCard extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: <Widget>[
           ListTile(
-            leading: Icon(Icons.album),
+            leading: const Icon(Icons.shield),
             title: Text(
               _name,
               style: Theme.of(context).textTheme.headlineMedium,
