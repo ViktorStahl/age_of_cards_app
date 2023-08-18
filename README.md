@@ -4,13 +4,20 @@ Mobile app for Age of Cards
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
+### `flutter pub get`
+Downloads the dependencies specified in [pubspec.yaml](./pubspec.yaml).
 
-A few resources to get you started if this is your first Flutter project:
+### Local Storage 
+The app uses `dart:io` and [Dart's path_provider package](https://pub.dev/packages/path_provider) 
+to store data as a single JSON file to the local device.
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Data is serialized to JSON with the `dart:convert` and `json_serializable` packages which enables 
+annotations and can generate files for serializing to and from JSON. The generated files are named 
+`<filename>.g.dart`. To generate files run one of the following commands in the project root folder:
+```bash
+# One time build
+flutter pub run build_runner build --delete-conflicting-outputs
+# Continuous build with watcher
+```bash
+flutter pub run build_runner watch --delete-conflicting-outputs
+```

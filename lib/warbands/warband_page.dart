@@ -1,34 +1,50 @@
+import 'package:age_of_cards_app/warbands/warband.dart';
+import 'package:age_of_cards_app/warbands/warband_container.dart';
 import 'package:flutter/material.dart';
 
+import '../warband_storage.dart';
+
 class WarbandPage extends StatefulWidget {
-  const WarbandPage({super.key});
+  const WarbandPage({super.key, required this.storage});
+
+  final WarbandStorage storage;
 
   @override
   State<WarbandPage> createState() => _WarbandPageState();
 }
 
 class _WarbandPageState extends State<WarbandPage> {
-  List<String> warbands = [
-    "My Crocodiles",
-    "Boulder Brothers",
-    "Lizard Leprechauns"
-  ];
+  late WarbandContainer warbandsContainer;
 
-  void _addWarband() {
-    setState(() {
-      warbands.add("New Warband");
+  @override
+  void initState() {
+    super.initState();
+    warbandsContainer = WarbandContainer();
+    widget.storage.readWarbands().then((value) {
+      setState(() {
+        warbandsContainer = value;
+      });
     });
   }
 
-  List<WarbandCard> createWarbands(List<String> names) {
-    return names.map((name) => WarbandCard(name: name)).toList();
+  void _addWarband() {
+    setState(() {
+      warbandsContainer.warbands.add(Warband("New Warband", "Human Empires"));
+    });
+
+    // Write the variable as a string to the file.
+    widget.storage.writeWarbands(warbandsContainer);
+  }
+
+  List<WarbandCard> createWarbands(List<Warband> warbands) {
+    return warbands.map((warband) => WarbandCard(warband: warband)).toList();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: ListView(children: createWarbands(warbands)),
+        child: ListView(children: createWarbands(warbandsContainer.warbands)),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: _addWarband,
@@ -42,10 +58,10 @@ class _WarbandPageState extends State<WarbandPage> {
 class WarbandCard extends StatelessWidget {
   const WarbandCard({
     super.key,
-    required String name,
-  }) : _name = name;
+    required Warband warband,
+  }) : _warband = warband;
 
-  final String _name;
+  final Warband _warband;
 
   @override
   Widget build(BuildContext context) {
@@ -56,10 +72,10 @@ class WarbandCard extends StatelessWidget {
           ListTile(
             leading: const Icon(Icons.shield),
             title: Text(
-              _name,
+              _warband.name,
               style: Theme.of(context).textTheme.headlineMedium,
             ),
-            subtitle: const Text('Human Empires'),
+            subtitle: Text(_warband.faction),
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.end,

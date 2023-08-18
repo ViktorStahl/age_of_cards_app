@@ -1,3 +1,4 @@
+import 'package:age_of_cards_app/warband_storage.dart';
 import 'package:age_of_cards_app/warbands/warband_page.dart';
 import 'package:flutter/material.dart';
 
@@ -58,9 +59,9 @@ class _HomeTabControllerState extends State<HomeTabController> with TickerProvid
                 ],
               ),
             ),
-            body: TabBarView(controller: _tabController, children: const [
-              WarbandPage(),
-              Icon(Icons.local_library),
+            body: TabBarView(controller: _tabController, children: [
+              WarbandPage(storage: WarbandStorage()),
+              const Icon(Icons.local_library),
             ]),
         ));
   }
