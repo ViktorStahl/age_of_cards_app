@@ -1,5 +1,6 @@
 import 'package:age_of_cards_app/warbands/warband.dart';
 import 'package:age_of_cards_app/warbands/warband_container.dart';
+import 'package:age_of_cards_app/warbands/warband_form_page.dart';
 import 'package:flutter/material.dart';
 
 import '../warband_storage.dart';
@@ -27,9 +28,11 @@ class _WarbandPageState extends State<WarbandPage> {
     });
   }
 
-  void _addWarband() {
+  Future<void> _addWarband(BuildContext context) async {
+    final result = await Navigator.push(
+        context, MaterialPageRoute(builder: (context) => WarbandFormPage()));
     setState(() {
-      warbandsContainer.warbands.add(Warband("New Warband", "Human Empires"));
+      warbandsContainer.warbands.add(result);
     });
 
     // Write the variable as a string to the file.
@@ -47,7 +50,9 @@ class _WarbandPageState extends State<WarbandPage> {
         child: ListView(children: createWarbands(warbandsContainer.warbands)),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: _addWarband,
+        onPressed: () {
+          _addWarband(context);
+        },
         tooltip: 'Add Warband',
         child: const Icon(Icons.add),
       ),
