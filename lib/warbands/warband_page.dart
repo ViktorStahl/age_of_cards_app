@@ -39,8 +39,20 @@ class _WarbandPageState extends State<WarbandPage> {
     widget.storage.writeWarbands(warbandsContainer);
   }
 
+  void _deleteWarband(Warband warband) async {
+    setState(() {
+      warbandsContainer.warbands.remove(warband);
+    });
+
+    // Write the variable as a string to the file.
+    widget.storage.writeWarbands(warbandsContainer);
+  }
+
   List<WarbandCard> createWarbands(List<Warband> warbands) {
-    return warbands.map((warband) => WarbandCard(warband: warband)).toList();
+    return warbands
+        .map((warband) =>
+            WarbandCard(warband: warband, onDelete: _deleteWarband))
+        .toList();
   }
 
   @override
@@ -64,9 +76,12 @@ class WarbandCard extends StatelessWidget {
   const WarbandCard({
     super.key,
     required Warband warband,
-  }) : _warband = warband;
+    void Function(Warband)? onDelete,
+  })  : _warband = warband,
+        _onDelete = onDelete;
 
   final Warband _warband;
+  final void Function(Warband)? _onDelete;
 
   @override
   Widget build(BuildContext context) {
@@ -98,7 +113,7 @@ class WarbandCard extends StatelessWidget {
                 iconSize: 24.0,
                 color: Theme.of(context).iconTheme.color,
                 onPressed: () {
-                  /* TODO Implement */
+                  _onDelete?.call(_warband);
                 },
               ),
               const SizedBox(width: 8),
