@@ -1,5 +1,7 @@
 import 'package:json_annotation/json_annotation.dart';
 
+import 'character.dart';
+
 // Generated serialization class
 part 'warband.g.dart';
 
@@ -9,6 +11,7 @@ class Warband {
   
   final String name;
   final String faction;
+  List<Character> characters = [];
   final DateTime created = DateTime.now();
 
   /// Factory constructor for creating new instances from JSON Maps
