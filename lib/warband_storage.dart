@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
-import 'package:age_of_cards_app/warbands/warband_container.dart';
+import 'package:age_of_cards_app/models/warband_container.dart';
 import 'package:path_provider/path_provider.dart';
 
 class WarbandStorage {

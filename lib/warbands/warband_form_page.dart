@@ -1,5 +1,5 @@
 import 'package:age_of_cards_app/constants/factions.dart';
-import 'package:age_of_cards_app/warbands/warband.dart';
+import 'package:age_of_cards_app/models/warband_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 
@@ -10,8 +10,8 @@ class WarbandFormPage extends StatelessWidget {
   final _nameFieldKey = GlobalKey<FormBuilderFieldState>();
   final _factionFieldKey = GlobalKey<FormBuilderFieldState>();
 
-  Warband createWarband() {
-    return Warband(_nameFieldKey.currentState!.value.toString(),
+  WarbandModel createWarband() {
+    return WarbandModel(_nameFieldKey.currentState!.value.toString(),
         _factionFieldKey.currentState!.value.toString());
   }
 

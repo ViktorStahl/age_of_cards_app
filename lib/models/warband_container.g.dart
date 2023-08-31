@@ -9,7 +9,7 @@ part of 'warband_container.dart';
 WarbandContainer _$WarbandContainerFromJson(Map<String, dynamic> json) =>
     WarbandContainer()
       ..warbands = (json['warbands'] as List<dynamic>)
-          .map((e) => Warband.fromJson(e as Map<String, dynamic>))
+          .map((e) => WarbandModel.fromJson(e as Map<String, dynamic>))
           .toList();
 
 Map<String, dynamic> _$WarbandContainerToJson(WarbandContainer instance) =>

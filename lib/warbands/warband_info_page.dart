@@ -1,12 +1,12 @@
 import 'package:age_of_cards_app/constants/creatures.dart';
 import 'package:age_of_cards_app/warbands/character.dart';
-import 'package:age_of_cards_app/warbands/warband.dart';
+import 'package:age_of_cards_app/models/warband_model.dart';
 import 'package:flutter/material.dart';
 
 class WarbandInfoPage extends StatefulWidget {
   const WarbandInfoPage({super.key, required this.warband});
 
-  final Warband warband;
+  final WarbandModel warband;
 
   @override
   State<WarbandInfoPage> createState() => _WarbandInfoPageState();

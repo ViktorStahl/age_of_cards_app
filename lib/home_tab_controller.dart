@@ -59,9 +59,9 @@ class _HomeTabControllerState extends State<HomeTabController> with TickerProvid
                 ],
               ),
             ),
-            body: TabBarView(controller: _tabController, children: [
-              WarbandPage(storage: WarbandStorage()),
-              const Icon(Icons.local_library),
+            body: TabBarView(controller: _tabController, children: const [
+              WarbandPage(),
+              Icon(Icons.local_library),
             ]),
         ));
   }

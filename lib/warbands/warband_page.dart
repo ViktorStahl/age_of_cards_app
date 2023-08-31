@@ -1,102 +1,81 @@
-import 'package:age_of_cards_app/warbands/warband.dart';
-import 'package:age_of_cards_app/warbands/warband_container.dart';
+import 'package:age_of_cards_app/models/warband_container_model.dart';
 import 'package:age_of_cards_app/warbands/warband_form_page.dart';
 import 'package:age_of_cards_app/warbands/warband_info_page.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-import '../warband_storage.dart';
+import '../models/warband_model.dart';
 
 class WarbandPage extends StatefulWidget {
-  const WarbandPage({super.key, required this.storage});
-
-  final WarbandStorage storage;
+  const WarbandPage({super.key});
 
   @override
   State<WarbandPage> createState() => _WarbandPageState();
 }
 
 class _WarbandPageState extends State<WarbandPage> {
-  late WarbandContainer warbandsContainer;
-
   @override
   void initState() {
     super.initState();
-    warbandsContainer = WarbandContainer();
-    widget.storage.readWarbands().then((value) {
-      setState(() {
-        warbandsContainer = value;
-      });
-    });
   }
 
-  Future<void> _addWarband(BuildContext context) async {
+  Future<void> _addWarband(
+      BuildContext context, WarbandContainerModel container) async {
     final result = await Navigator.push(
         context, MaterialPageRoute(builder: (context) => WarbandFormPage()));
-    setState(() {
-      warbandsContainer.warbands.add(result);
-    });
-
-    // Write the variable as a string to the file.
-    widget.storage.writeWarbands(warbandsContainer);
+      container.addWarband(result);
   }
 
-  void _deleteWarband(Warband warband) async {
-    setState(() {
-      warbandsContainer.warbands.remove(warband);
-    });
-
-    // Write the variable as a string to the file.
-    widget.storage.writeWarbands(warbandsContainer);
-  }
-
-  void _openWarbandInfoPage(BuildContext context, warband) async {
-    print(context);
-    print(warband.characters);
-    await Navigator.push(context, MaterialPageRoute(builder: (context) => WarbandInfoPage(warband: warband)));
-  }
-
-  List<WarbandCard> createWarbands(List<Warband> warbands) {
+  List<WarbandCard> createWarbands(List<WarbandModel> warbands) {
     return warbands
-        .map((warband) =>
-            WarbandCard(warband: warband, onDelete: _deleteWarband, onTap: _openWarbandInfoPage,))
+        .map((warband) => WarbandCard(warband: warband))
         .toList();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: ListView(children: createWarbands(warbandsContainer.warbands)),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          _addWarband(context);
-        },
-        tooltip: 'Add Warband',
-        child: const Icon(Icons.add),
-      ),
-    );
+    return Consumer<WarbandContainerModel>(builder: (context, model, _) {
+      return Scaffold(
+        body: Center(
+            child:
+                ListView(children: createWarbands(model.warbands))),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            _addWarband(context, model);
+          },
+          tooltip: 'Add Warband',
+          child: const Icon(Icons.add),
+        ),
+      );
+    });
   }
 }
 
 class WarbandCard extends StatelessWidget {
   const WarbandCard({
     super.key,
-    required Warband warband,
-    void Function(Warband)? onDelete,
-    void Function(BuildContext, Warband)? onTap,
-  })  : _warband = warband,
-        _onDelete = onDelete,
-        _onTap = onTap;
+    required WarbandModel warband,
+  })  : _warband = warband;
 
-  final Warband _warband;
-  final void Function(Warband)? _onDelete;
-  final void Function(BuildContext, Warband)? _onTap;
+  final WarbandModel _warband;
+
+  void _deleteWarband(BuildContext context, WarbandModel warband) async {
+    WarbandContainerModel container = Provider.of<WarbandContainerModel>(context, listen: false);
+    container.deleteWarband(warband);
+  }
+
+  void _openWarbandInfoPage(
+      BuildContext context, WarbandModel warband) async {
+    await Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => WarbandInfoPage(warband: warband)));
+  }
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-        onTap: () => _onTap?.call(context, _warband),
+        onTap: () => _openWarbandInfoPage(context, _warband),
         child: Card(
           child: Column(
             mainAxisSize: MainAxisSize.min,
@@ -112,7 +91,7 @@ class WarbandCard extends StatelessWidget {
                   icon: const Icon(Icons.delete),
                   iconSize: 24.0,
                   color: Theme.of(context).iconTheme.color,
-                  onPressed: () => _onDelete?.call(_warband),
+                  onPressed: () => _deleteWarband(context, _warband),
                 ),
               ),
             ],
