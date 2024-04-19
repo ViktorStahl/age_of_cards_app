@@ -1,31 +1,24 @@
 import 'package:age_of_cards_app/constants/creatures.dart';
 import 'package:age_of_cards_app/warbands/character.dart';
-import 'package:age_of_cards_app/models/warband_model.dart';
+import 'package:age_of_cards_app/models/warband.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-class WarbandInfoPage extends StatefulWidget {
+import '../models/warband_container_model.dart';
+
+class WarbandInfoPage extends StatelessWidget {
   const WarbandInfoPage({super.key, required this.warband});
 
-  final WarbandModel warband;
-
-  @override
-  State<WarbandInfoPage> createState() => _WarbandInfoPageState();
-}
-
-class _WarbandInfoPageState extends State<WarbandInfoPage> {
-  @override
-  void initState() {
-    super.initState();
-  }
+  final Warband warband;
 
   void _addCharacter(BuildContext context) async {
-    widget.warband.characters.add(Character("Kalle", Creature.human));
-    setState(() {});
+    Provider.of<WarbandContainerModel>(context, listen: false)
+        .addCharacter(warband, Character("Kalle", Creature.human));
   }
 
-  void _deleteCharacter(Character character) async {
-    widget.warband.characters.remove(character);
-    setState(() {});
+  void _deleteCharacter(BuildContext context, Character character) async {
+    Provider.of<WarbandContainerModel>(context, listen: false)
+        .deleteCharacter(warband, character);
   }
 
   List<Widget> createCharacterCards(List<Character> characters) {
@@ -39,19 +32,21 @@ class _WarbandInfoPageState extends State<WarbandInfoPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text(widget.warband.name),
+          title: Text(warband.name),
         ),
         body: SingleChildScrollView(
             padding: const EdgeInsets.all(24),
             child: Center(
               child: Column(children: [
                 Center(
-                    child: widget.warband.characters.isEmpty
+                    child: warband.characters.isEmpty
                         ? Text("Add Character")
-                        : ListView(
+                        : Consumer<WarbandContainerModel>(builder: (context, model, _) {
+                          return ListView(
                             shrinkWrap: true,
                             children: createCharacterCards(
-                                widget.warband.characters))),
+                                warband.characters));
+                        })),
                 IconButton(
                     onPressed: () => _addCharacter(context),
                     icon: const Icon(Icons.add)),
@@ -64,12 +59,12 @@ class CharacterCard extends StatelessWidget {
   const CharacterCard({
     super.key,
     required Character character,
-    void Function(Character)? onDelete,
+    void Function(BuildContext, Character)? onDelete,
   })  : _character = character,
         _onDelete = onDelete;
 
   final Character _character;
-  final void Function(Character)? _onDelete;
+  final void Function(BuildContext, Character)? _onDelete;
 
   @override
   Widget build(BuildContext context) {
@@ -89,7 +84,7 @@ class CharacterCard extends StatelessWidget {
                 iconSize: 24.0,
                 color: Theme.of(context).iconTheme.color,
                 onPressed: () {
-                  _onDelete?.call(_character);
+                  _onDelete?.call(context, _character);
                 },
               )),
         ],

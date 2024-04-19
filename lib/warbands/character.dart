@@ -8,7 +8,7 @@ part 'character.g.dart';
 class Character {
   Character(this.name, this.creatureType);
 
-  final String name;
+  String name;
   final Creature creatureType;
   final DateTime created = DateTime.now();
 
@@ -18,4 +18,8 @@ class Character {
 
   /// Calls the private, generated helper method `_$CharacterToJson`.
   Map<String, dynamic> toJson() => _$CharacterToJson(this);
+
+  factory Character.fromMap(Map<String, dynamic> map) {
+    return Character(map["name"], Creature.fromString(map["creatureType"]));
+  }
 }

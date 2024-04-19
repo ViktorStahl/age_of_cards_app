@@ -1,3 +1,6 @@
+import 'package:json_annotation/json_annotation.dart';
+
+@JsonEnum(valueField: "text")
 enum Creature {
   human(text: "Human", health: 5, move: 5),
   spectre(text: "Spectre", health: 3, move: 5),
@@ -14,5 +17,9 @@ enum Creature {
   @override
   String toString() {
     return text;
+  }
+
+  static Creature fromString(String name) {
+    return Creature.values.firstWhere((creature) => creature.toString() == name);
   }
 }

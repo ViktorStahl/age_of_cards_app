@@ -4,7 +4,7 @@ import 'package:age_of_cards_app/warbands/warband_info_page.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../models/warband_model.dart';
+import '../models/warband.dart';
 
 class WarbandPage extends StatefulWidget {
   const WarbandPage({super.key});
@@ -19,53 +19,47 @@ class _WarbandPageState extends State<WarbandPage> {
     super.initState();
   }
 
-  Future<void> _addWarband(
-      BuildContext context, WarbandContainerModel container) async {
-    final result = await Navigator.push(
+  void _addWarband(BuildContext context) {
+    Navigator.push(
         context, MaterialPageRoute(builder: (context) => WarbandFormPage()));
-      container.addWarband(result);
   }
 
-  List<WarbandCard> createWarbands(List<WarbandModel> warbands) {
-    return warbands
-        .map((warband) => WarbandCard(warband: warband))
-        .toList();
+  List<WarbandCard> createWarbands(List<Warband> warbands) {
+    return warbands.map((warband) => WarbandCard(warband: warband)).toList();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<WarbandContainerModel>(builder: (context, model, _) {
-      return Scaffold(
-        body: Center(
-            child:
-                ListView(children: createWarbands(model.warbands))),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            _addWarband(context, model);
-          },
-          tooltip: 'Add Warband',
-          child: const Icon(Icons.add),
-        ),
-      );
-    });
+    return Scaffold(
+      body: Center(
+          child: Consumer<WarbandContainerModel>(builder: (context, model, _) {
+        return ListView(children: createWarbands(model.warbands));
+      })),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          _addWarband(context);
+        },
+        tooltip: 'Add Warband',
+        child: const Icon(Icons.add),
+      ),
+    );
   }
 }
 
 class WarbandCard extends StatelessWidget {
   const WarbandCard({
     super.key,
-    required WarbandModel warband,
-  })  : _warband = warband;
+    required Warband warband,
+  }) : _warband = warband;
 
-  final WarbandModel _warband;
+  final Warband _warband;
 
-  void _deleteWarband(BuildContext context, WarbandModel warband) async {
-    WarbandContainerModel container = Provider.of<WarbandContainerModel>(context, listen: false);
-    container.deleteWarband(warband);
+  void _deleteWarband(BuildContext context, Warband warband) async {
+    Provider.of<WarbandContainerModel>(context, listen: false)
+        .deleteWarband(warband);
   }
 
-  void _openWarbandInfoPage(
-      BuildContext context, WarbandModel warband) async {
+  void _openWarbandInfoPage(BuildContext context, Warband warband) async {
     await Navigator.push(
         context,
         MaterialPageRoute(

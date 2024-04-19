@@ -1,7 +1,9 @@
 import 'package:age_of_cards_app/constants/factions.dart';
-import 'package:age_of_cards_app/models/warband_model.dart';
+import 'package:age_of_cards_app/models/warband.dart';
+import 'package:age_of_cards_app/models/warband_container_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'package:provider/provider.dart';
 
 class WarbandFormPage extends StatelessWidget {
   WarbandFormPage({super.key});
@@ -10,8 +12,12 @@ class WarbandFormPage extends StatelessWidget {
   final _nameFieldKey = GlobalKey<FormBuilderFieldState>();
   final _factionFieldKey = GlobalKey<FormBuilderFieldState>();
 
-  WarbandModel createWarband() {
-    return WarbandModel(_nameFieldKey.currentState!.value.toString(),
+  void addWarband(BuildContext context, Warband warband) {
+    Provider.of<WarbandContainerModel>(context, listen: false).addWarband(warband);
+  }
+
+  Warband createWarband() {
+    return Warband.create(_nameFieldKey.currentState!.value.toString(),
         _factionFieldKey.currentState!.value.toString());
   }
 
@@ -53,7 +59,8 @@ class WarbandFormPage extends StatelessWidget {
                       color: Theme.of(context).colorScheme.secondary,
                       onPressed: () {
                         if (_formKey.currentState?.saveAndValidate() ?? false) {
-                          Navigator.pop(context, createWarband());
+                          addWarband(context, createWarband());
+                          Navigator.pop(context);
                         }
                       },
                       child: const Text('Save',

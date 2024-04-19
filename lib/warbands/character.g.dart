@@ -17,7 +17,7 @@ Map<String, dynamic> _$CharacterToJson(Character instance) => <String, dynamic>{
     };
 
 const _$CreatureEnumMap = {
-  Creature.human: 'human',
-  Creature.spectre: 'spectre',
-  Creature.orc: 'orc',
+  Creature.human: 'Human',
+  Creature.spectre: 'Spectre',
+  Creature.orc: 'Orc',
 };
