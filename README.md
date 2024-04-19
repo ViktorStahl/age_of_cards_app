@@ -18,6 +18,22 @@ annotations and can generate files for serializing to and from JSON. The generat
 # One time build
 flutter pub run build_runner build --delete-conflicting-outputs
 # Continuous build with watcher
-```bash
 flutter pub run build_runner watch --delete-conflicting-outputs
 ```
+
+## (coming) Features
+
+### Build warband
+
+#### Build
+
+##### Create list
+* Choose faction
+* Name list
+* Add characters
+##### Create character
+* Name
+* Race
+* Equipment
+### Save
+### Load

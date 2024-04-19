@@ -1,17 +1,17 @@
 import 'package:age_of_cards_app/constants/factions.dart';
-import 'package:age_of_cards_app/models/warband_model.dart';
+import 'package:age_of_cards_app/models/warband.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 
-class WarbandFormPage extends StatelessWidget {
-  WarbandFormPage({super.key});
+class WarbandFormScreen extends StatelessWidget {
+  WarbandFormScreen({super.key});
 
   final _formKey = GlobalKey<FormBuilderState>();
   final _nameFieldKey = GlobalKey<FormBuilderFieldState>();
   final _factionFieldKey = GlobalKey<FormBuilderFieldState>();
 
-  WarbandModel createWarband() {
-    return WarbandModel(_nameFieldKey.currentState!.value.toString(),
+  Warband createWarband() {
+    return Warband.create(_nameFieldKey.currentState!.value.toString(),
         _factionFieldKey.currentState!.value.toString());
   }
 
@@ -19,7 +19,7 @@ class WarbandFormPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text('Edit Warband'),
+          title: const Text('Edit Warband'),
         ),
         body: SingleChildScrollView(
             padding: const EdgeInsets.all(24),
