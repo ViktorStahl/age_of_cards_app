@@ -1,9 +1,8 @@
-import 'dart:collection';
-
 import 'package:json_annotation/json_annotation.dart';
-import 'package:localstore/localstore.dart';
 
 import '../warbands/character.dart';
+import 'package:uuid/uuid.dart';
+
 
 // Generated serialization class
 part 'warband.g.dart';
@@ -12,8 +11,7 @@ part 'warband.g.dart';
 class Warband {
   Warband.create(this.name, this.faction) {
     created = DateTime.now();
-    final db = Localstore.instance;
-    id = db.collection("warbands").doc().id;
+    id = const Uuid().v4();
   }
 
   Warband(this.id, this.name, this.faction, this.created, this._characters);
@@ -27,7 +25,8 @@ class Warband {
 
   /// Factory constructor for creating new instances from JSON Maps
   /// using the generated `_$CharacterFromJson()` constructor.
-  factory Warband.fromJson(Map<String, dynamic> json) => _$WarbandFromJson(json);
+  factory Warband.fromJson(Map<String, dynamic> json) =>
+      _$WarbandFromJson(json);
 
   /// Calls the private, generated helper method `_$CharacterToJson`.
   Map<String, dynamic> toJson() => _$WarbandToJson(this);
@@ -54,8 +53,7 @@ class Warband {
     this.name = name;
   }
 
-  UnmodifiableListView<Character> get characters =>
-      UnmodifiableListView(_characters);
+  List<Character> get characters => _characters;
 
   List<Character> getCharacterList() {
     return _characters;

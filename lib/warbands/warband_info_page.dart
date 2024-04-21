@@ -13,7 +13,7 @@ class WarbandInfoPage extends StatelessWidget {
 
   void _addCharacter(BuildContext context) async {
     Provider.of<WarbandContainerModel>(context, listen: false)
-        .addCharacter(warband, Character("Kalle", Creature.human));
+        .addCharacter(warband, Character.create("Kalle", Creature.human));
   }
 
   void _deleteCharacter(BuildContext context, Character character) async {
@@ -38,15 +38,14 @@ class WarbandInfoPage extends StatelessWidget {
             padding: const EdgeInsets.all(24),
             child: Center(
               child: Column(children: [
-                Center(
-                    child: warband.characters.isEmpty
-                        ? Text("Add Character")
-                        : Consumer<WarbandContainerModel>(builder: (context, model, _) {
-                          return ListView(
-                            shrinkWrap: true,
-                            children: createCharacterCards(
-                                warband.characters));
-                        })),
+                Center(child: Consumer<WarbandContainerModel>(
+                    builder: (context, model, _) {
+                  return warband.characters.isEmpty
+                      ? Text("Add Character")
+                      : ListView(
+                          shrinkWrap: true,
+                          children: createCharacterCards(warband.characters));
+                })),
                 IconButton(
                     onPressed: () => _addCharacter(context),
                     icon: const Icon(Icons.add)),

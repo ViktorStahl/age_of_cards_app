@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 
 import 'home_tab_controller.dart';
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   runApp(const MyApp());
 }
@@ -39,7 +39,6 @@ class MyApp extends StatelessWidget {
             useMaterial3: true,
           ),
           home: const HomeTabController(title: 'Age of Cards'),
-        )
-    );
+        ));
   }
 }

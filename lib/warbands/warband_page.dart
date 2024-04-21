@@ -6,18 +6,8 @@ import 'package:provider/provider.dart';
 
 import '../models/warband.dart';
 
-class WarbandPage extends StatefulWidget {
+class WarbandPage extends StatelessWidget {
   const WarbandPage({super.key});
-
-  @override
-  State<WarbandPage> createState() => _WarbandPageState();
-}
-
-class _WarbandPageState extends State<WarbandPage> {
-  @override
-  void initState() {
-    super.initState();
-  }
 
   void _addWarband(BuildContext context) {
     Navigator.push(
@@ -80,7 +70,7 @@ class WarbandCard extends StatelessWidget {
                   _warband.name,
                   style: Theme.of(context).textTheme.headlineMedium,
                 ),
-                subtitle: Text(_warband.faction),
+                subtitle: Text(_warband.faction + _warband.id),
                 trailing: IconButton(
                   icon: const Icon(Icons.delete),
                   iconSize: 24.0,
