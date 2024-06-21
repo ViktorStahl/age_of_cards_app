@@ -25,7 +25,7 @@ class WarbandFormPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          title: Text('Edit Warband'),
+          title: const Text('Edit Warband'),
         ),
         body: SingleChildScrollView(
             padding: const EdgeInsets.all(24),

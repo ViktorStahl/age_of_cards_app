@@ -2,8 +2,11 @@ import 'package:age_of_cards_app/models/warband_container_model.dart';
 import 'package:age_of_cards_app/warbands/warband_form_page.dart';
 import 'package:age_of_cards_app/warbands/warband_info_page.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
+import '../blocs/warband_container/warband_container_bloc.dart';
 import '../models/warband.dart';
 
 class WarbandPage extends StatelessWidget {
@@ -21,10 +24,19 @@ class WarbandPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-          child: Consumer<WarbandContainerModel>(builder: (context, model, _) {
-        return ListView(children: createWarbands(model.warbands));
-      })),
+      body: Center(child: BlocBuilder<WarbandContainerBloc, WarbandContainerState>(
+        builder: (context, state) {
+          if (state is WarbandContainerLoading)
+          {
+            return const CircularProgressIndicator();
+          } else if (state is WarbandContainerLoaded)
+          {
+            return ListView(children: createWarbands(state.warbands));
+          } else {
+            return const Text("Something went wrong.");
+          }
+        },
+      )),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           _addWarband(context);
@@ -70,7 +82,19 @@ class WarbandCard extends StatelessWidget {
                   _warband.name,
                   style: Theme.of(context).textTheme.headlineMedium,
                 ),
-                subtitle: Text(_warband.faction + _warband.id),
+                subtitle: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      _warband.id,
+                      style: Theme.of(context).textTheme.labelSmall
+                    ),
+                    Text(
+                      "Created: ${DateFormat(DateFormat.YEAR_NUM_MONTH_WEEKDAY_DAY).format(_warband.created)}",
+                      style: Theme.of(context).textTheme.labelSmall
+                    ),
+                    Text(_warband.faction)
+                    ]),
                 trailing: IconButton(
                   icon: const Icon(Icons.delete),
                   iconSize: 24.0,
