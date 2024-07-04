@@ -11,9 +11,7 @@ Warband _$WarbandFromJson(Map<String, dynamic> json) => Warband(
       json['name'] as String,
       json['faction'] as String,
       DateTime.parse(json['created'] as String),
-      (json['_characters'] as List<dynamic>)
-          .map((e) => Character.fromJson(e as Map<String, dynamic>))
-          .toList(),
+      (json['_characters'] as List<dynamic>).map((e) => e as String).toList(),
     );
 
 Map<String, dynamic> _$WarbandToJson(Warband instance) => <String, dynamic>{

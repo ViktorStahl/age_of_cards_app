@@ -1,4 +1,4 @@
-import 'package:age_of_cards_app/warbands/warband_page.dart';
+import 'package:age_of_cards_app/warbands/warband_list_screen.dart';
 import 'package:flutter/material.dart';
 
 class HomeTabController extends StatefulWidget {
@@ -59,7 +59,7 @@ class _HomeTabControllerState extends State<HomeTabController> with TickerProvid
               ),
             ),
             body: TabBarView(controller: _tabController, children: const [
-              WarbandPage(),
+              WarbandListScreen(),
               Icon(Icons.local_library),
             ]),
         ));

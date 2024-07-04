@@ -1,6 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
 
-import '../warbands/character.dart';
+import 'character.dart';
 import 'package:uuid/uuid.dart';
 
 
@@ -19,7 +19,7 @@ class Warband {
   String name;
   late final String faction;
   @JsonKey(includeFromJson: true, includeToJson: true)
-  List<Character> _characters = [];
+  List<String> _characters = [];
   late final DateTime created;
   late final String id;
 
@@ -31,31 +31,17 @@ class Warband {
   /// Calls the private, generated helper method `_$CharacterToJson`.
   Map<String, dynamic> toJson() => _$WarbandToJson(this);
 
-  void addCharacter(Character character) {
-    _characters.add(character);
+  void addCharacter(String characterID) {
+    _characters.add(characterID);
   }
-
-  /*factory Warband.fromMap(Map<String, dynamic> map) {
-    List<Character> characters = [];
-    List.castFrom(map["characters"]).forEach((character) {
-      characters.add(Character.fromMap(character));
-    });
-    return Warband.import(
-      map["id"],
-      map["name"],
-      map["faction"],
-      map["created"],
-      characters
-    );
-  }*/
 
   void setName(String name) {
     this.name = name;
   }
 
-  List<Character> get characters => _characters;
+  List<String> get characters => _characters;
 
-  List<Character> getCharacterList() {
+  List<String> getCharacterList() {
     return _characters;
   }
 }

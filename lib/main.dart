@@ -1,4 +1,4 @@
-import 'package:age_of_cards_app/blocs/warband_container/warband_container_bloc.dart';
+import 'package:age_of_cards_app/logic/warbands/warband_container_bloc.dart';
 import 'package:age_of_cards_app/constants/factions.dart';
 import 'package:age_of_cards_app/models/warband.dart';
 import 'package:flutter/material.dart';
