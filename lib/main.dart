@@ -19,11 +19,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) =>
-          WarbandCollectionCubit() /*..add(LoadWarbands(warbands: [
-        Warband(const Uuid().v4(), "Viktor Testar", HUMAN_EMPIRES, DateTime.now(), [])
-      ]))*/
-      ,
+      create: (context) => WarbandCollectionCubit(),
       child: MaterialApp(
         title: 'Age of Cards',
         theme: ThemeData(

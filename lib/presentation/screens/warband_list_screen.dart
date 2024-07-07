@@ -13,15 +13,21 @@ class WarbandListScreen extends StatelessWidget {
   const WarbandListScreen({super.key});
 
   Future<void> _addWarband(BuildContext context) async {
-    final Warband warband = await Navigator.push(
+    final Warband? warband = await Navigator.push(
         context, MaterialPageRoute(builder: (context) => WarbandFormScreen()));
+    if (warband == null) {
+      return;
+    }
     if (!context.mounted) return;
     context.read<WarbandCollectionCubit>().addWarband(warband);
   }
 
   List<Widget> createWarbands(Set<WarbandBloc> warbands) {
     return warbands
-        .map((warbandBloc) => WarbandCard(warbandBloc: warbandBloc))
+        .map((warbandBloc) => BlocProvider<WarbandBloc>.value(
+              value: warbandBloc,
+              child: const WarbandCard(),
+            ))
         .toList();
   }
 
@@ -58,9 +64,7 @@ class WarbandListScreen extends StatelessWidget {
 }
 
 class WarbandCard extends StatelessWidget {
-  const WarbandCard({super.key, required this.warbandBloc});
-
-  final WarbandBloc warbandBloc;
+  const WarbandCard({super.key});
 
   void _deleteWarband(BuildContext context, Warband warband) async {
     context.read<WarbandCollectionCubit>().deleteWarband(warband.id);
@@ -69,42 +73,46 @@ class WarbandCard extends StatelessWidget {
   void _openWarbandInfoScreen(BuildContext originalContext) async {
     await Navigator.of(originalContext).push(MaterialPageRoute(
         builder: (newContext) => BlocProvider<WarbandBloc>.value(
-              value: warbandBloc,
+              value: BlocProvider.of<WarbandBloc>(originalContext),
               child: const WarbandInfoScreen(),
             )));
   }
 
   @override
   Widget build(BuildContext context) {
-    final Warband warband = warbandBloc.state.warband;
     return GestureDetector(
         onTap: () => _openWarbandInfoScreen(context),
         child: Card(
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
-              ListTile(
-                leading: const Icon(Icons.shield),
-                title: Text(
-                  warband.name,
-                  style: Theme.of(context).textTheme.headlineMedium,
-                ),
-                subtitle: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(warband.id,
-                          style: Theme.of(context).textTheme.labelSmall),
-                      Text(
-                          'Created: ${DateFormat(DateFormat.YEAR_NUM_MONTH_WEEKDAY_DAY).format(warband.created)}',
-                          style: Theme.of(context).textTheme.labelSmall),
-                      Text(warband.faction)
-                    ]),
-                trailing: IconButton(
-                  icon: const Icon(Icons.delete),
-                  iconSize: 24.0,
-                  color: Theme.of(context).iconTheme.color,
-                  onPressed: () => _deleteWarband(context, warband),
-                ),
+              BlocBuilder<WarbandBloc, WarbandState>(
+                builder: (context, state) {
+                  Warband warband = state.warband;
+                  return ListTile(
+                    leading: const Icon(Icons.shield),
+                    title: Text(
+                      warband.name,
+                      style: Theme.of(context).textTheme.headlineMedium,
+                    ),
+                    subtitle: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(warband.id,
+                              style: Theme.of(context).textTheme.labelSmall),
+                          Text(
+                              'Created: ${DateFormat(DateFormat.YEAR_NUM_MONTH_WEEKDAY_DAY).format(warband.created)}',
+                              style: Theme.of(context).textTheme.labelSmall),
+                          Text(warband.faction)
+                        ]),
+                    trailing: IconButton(
+                      icon: const Icon(Icons.delete),
+                      iconSize: 24.0,
+                      color: Theme.of(context).iconTheme.color,
+                      onPressed: () => _deleteWarband(context, warband),
+                    ),
+                  );
+                },
               )
             ],
           ),

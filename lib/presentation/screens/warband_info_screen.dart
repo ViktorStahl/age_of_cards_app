@@ -5,6 +5,7 @@ import 'package:age_of_cards_app/models/character.dart';
 import 'package:age_of_cards_app/presentation/screens/character_detail_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:random_name_generator/random_name_generator.dart';
 
 class WarbandInfoScreen extends StatelessWidget {
@@ -38,8 +39,10 @@ class WarbandInfoScreen extends StatelessWidget {
                                 shrinkWrap: true,
                                 itemBuilder: (context, index) {
                                   final characterCubit = characterList[index];
-                                  return CharacterCard(
-                                      characterCubit: characterCubit);
+                                  return BlocProvider<CharacterCubit>.value(
+                                    value: characterCubit,
+                                    child: const CharacterCard(),
+                                  );
                                 })),
                     IconButton(
                         onPressed: () => _addCharacter(context),
@@ -52,34 +55,55 @@ class WarbandInfoScreen extends StatelessWidget {
 }
 
 class CharacterCard extends StatelessWidget {
-  const CharacterCard({super.key, required this.characterCubit});
-
-  final CharacterCubit characterCubit;
+  const CharacterCard({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final character = characterCubit.state.character;
     return GestureDetector(
       onTap: () => _openCharacterDetailScreen(context),
       child: Card(
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
-            ListTile(
-                leading: const Icon(Icons.person),
-                title: Text(
-                  character.name,
-                  style: Theme.of(context).textTheme.headlineMedium,
-                ),
-                subtitle: Text(character.creatureType.toString()),
-                trailing: IconButton(
-                  icon: const Icon(Icons.delete),
-                  iconSize: 24.0,
-                  color: Theme.of(context).iconTheme.color,
-                  onPressed: () {
-                    _onDelete(context, character);
-                  },
-                ))
+            BlocBuilder<CharacterCubit, CharacterState>(
+              builder: (context, state) {
+                final character = state.character;
+                return ListTile(
+                    leading: const Icon(Icons.person),
+                    title: Text(
+                      character.name,
+                      style: Theme.of(context).textTheme.headlineMedium,
+                    ),
+                    subtitle: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Column(children: [
+                          Text('${character.creatureType}'),
+                        ]),
+                        Column(children: [
+                          Icon(MdiIcons.heart),
+                          Text('${character.creatureType.health}'),
+                        ]),
+                        Column(children: [
+                          Icon(MdiIcons.shield),
+                          Text('${character.creatureType.defence}'),
+                        ]),
+                        Column(children: [
+                          Icon(MdiIcons.run),
+                          Text('${character.creatureType.move}'),
+                        ]),
+                      ],
+                    ),
+                    trailing: IconButton(
+                      icon: const Icon(Icons.delete),
+                      iconSize: 24.0,
+                      color: Theme.of(context).iconTheme.color,
+                      onPressed: () {
+                        _onDelete(context, character);
+                      },
+                    ));
+              },
+            )
           ],
         ),
       ),
@@ -89,12 +113,12 @@ class CharacterCard extends StatelessWidget {
   _openCharacterDetailScreen(BuildContext originalContext) async {
     await Navigator.of(originalContext).push(MaterialPageRoute(
         builder: (newContext) => BlocProvider<CharacterCubit>.value(
-              value: characterCubit,
+              value: originalContext.read<CharacterCubit>(),
               child: const CharacterDetailScreen(),
             )));
   }
 
   void _onDelete(BuildContext context, Character character) {
-    context.read<WarbandBloc>().add(DeleteCharacter(character.id));
+    BlocProvider.of<WarbandBloc>(context).add(DeleteCharacter(character.id));
   }
 }
