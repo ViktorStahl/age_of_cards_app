@@ -38,7 +38,8 @@ class WarbandInfoScreen extends StatelessWidget {
                                 shrinkWrap: true,
                                 itemBuilder: (context, index) {
                                   final characterCubit = characterList[index];
-                                  return CharacterCard(characterCubit: characterCubit);
+                                  return CharacterCard(
+                                      characterCubit: characterCubit);
                                 })),
                     IconButton(
                         onPressed: () => _addCharacter(context),

@@ -19,7 +19,8 @@ class HomeTabController extends StatefulWidget {
   State<HomeTabController> createState() => _HomeTabControllerState();
 }
 
-class _HomeTabControllerState extends State<HomeTabController> with TickerProviderStateMixin {
+class _HomeTabControllerState extends State<HomeTabController>
+    with TickerProviderStateMixin {
   late TabController _tabController;
 
   @override
@@ -47,21 +48,21 @@ class _HomeTabControllerState extends State<HomeTabController> with TickerProvid
     return DefaultTabController(
         length: 3,
         child: Scaffold(
-            appBar: AppBar(
-              backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-              title: Text(widget.title),
-              bottom: TabBar(
-                controller: _tabController,
-                tabs: const [
-                  Tab(icon: Icon(Icons.list)),
-                  Tab(icon: Icon(Icons.local_library)),
-                ],
-              ),
+          appBar: AppBar(
+            backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+            title: Text(widget.title),
+            bottom: TabBar(
+              controller: _tabController,
+              tabs: const [
+                Tab(icon: Icon(Icons.list)),
+                Tab(icon: Icon(Icons.local_library)),
+              ],
             ),
-            body: TabBarView(controller: _tabController, children: const [
-              WarbandListScreen(),
-              Icon(Icons.local_library),
-            ]),
+          ),
+          body: TabBarView(controller: _tabController, children: const [
+            WarbandListScreen(),
+            Icon(Icons.local_library),
+          ]),
         ));
   }
 }

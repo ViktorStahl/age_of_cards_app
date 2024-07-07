@@ -1,10 +1,8 @@
-import 'package:age_of_cards_app/constants/factions.dart';
 import 'package:age_of_cards_app/logic/warband/warband_bloc.dart';
 import 'package:age_of_cards_app/models/warband.dart';
 import 'package:equatable/equatable.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
-import 'package:uuid/uuid.dart';
 
 part 'warband_collection_event.dart';
 
@@ -37,9 +35,11 @@ class WarbandCollectionCubit extends HydratedCubit<Set<WarbandBloc>> {
     };
   }
 
-    @override
+  @override
   void onError(Object error, StackTrace stackTrace) {
-    print('$error, $stackTrace');
+    if (kDebugMode) {
+      print('$error, $stackTrace');
+    }
     super.onError(error, stackTrace);
   }
 }

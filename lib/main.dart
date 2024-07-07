@@ -8,7 +8,8 @@ import 'presentation/home_tab_controller.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  HydratedBloc.storage = await HydratedStorage.build(storageDirectory: await getApplicationDocumentsDirectory());
+  HydratedBloc.storage = await HydratedStorage.build(
+      storageDirectory: await getApplicationDocumentsDirectory());
   runApp(const MyApp());
 }
 
@@ -18,9 +19,11 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => WarbandCollectionCubit()/*..add(LoadWarbands(warbands: [
+      create: (context) =>
+          WarbandCollectionCubit() /*..add(LoadWarbands(warbands: [
         Warband(const Uuid().v4(), "Viktor Testar", HUMAN_EMPIRES, DateTime.now(), [])
-      ]))*/,
+      ]))*/
+      ,
       child: MaterialApp(
         title: 'Age of Cards',
         theme: ThemeData(

@@ -2,6 +2,7 @@ import 'package:age_of_cards_app/logic/characters/character_cubit.dart';
 import 'package:age_of_cards_app/models/character.dart';
 import 'package:age_of_cards_app/models/warband.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/foundation.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 
 part 'warband_event.dart';
@@ -49,7 +50,9 @@ class WarbandBloc extends HydratedBloc<WarbandEvent, WarbandState> {
 
   @override
   void onError(Object error, StackTrace stackTrace) {
-    print('$error, $stackTrace');
+    if (kDebugMode) {
+      print('$error, $stackTrace');
+    }
     super.onError(error, stackTrace);
   }
 }

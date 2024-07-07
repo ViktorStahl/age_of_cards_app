@@ -1,5 +1,6 @@
 import 'package:age_of_cards_app/models/character.dart';
 import 'package:equatable/equatable.dart';
+import 'package:flutter/foundation.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 
 part 'character_state.dart';
@@ -20,9 +21,11 @@ class CharacterCubit extends HydratedCubit<CharacterState> {
     return state.toJson();
   }
 
-    @override
+  @override
   void onError(Object error, StackTrace stackTrace) {
-    print('$error, $stackTrace');
+    if (kDebugMode) {
+      print('$error, $stackTrace');
+    }
     super.onError(error, stackTrace);
   }
 }

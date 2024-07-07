@@ -12,7 +12,12 @@ class Warband extends Equatable {
   factory Warband.create(name, faction) {
     var created = DateTime.now();
     var id = const Uuid().v4();
-    return Warband(name: name, faction: faction, characters: const {}, created: created, id: id);
+    return Warband(
+        name: name,
+        faction: faction,
+        characters: const {},
+        created: created,
+        id: id);
   }
 
   const Warband(
@@ -42,7 +47,7 @@ class Warband extends Equatable {
   /// Factory constructor for creating new instances from JSON Maps
   /// using the generated `_$CharacterFromJson()` constructor.
   factory Warband.fromJson(Map<String, dynamic> json) {
-      return _$WarbandFromJson(json);
+    return _$WarbandFromJson(json);
   }
 
   /// Calls the private, generated helper method `_$CharacterToJson`.
@@ -65,7 +70,7 @@ class Warband extends Equatable {
         created: created ?? this.created,
         id: id ?? this.id);
   }
-  
+
   @override
   List<Object> get props => [name, faction, characters, created, id];
 }
