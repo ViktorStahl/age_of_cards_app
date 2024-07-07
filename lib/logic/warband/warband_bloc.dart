@@ -11,6 +11,7 @@ class WarbandBloc extends HydratedBloc<WarbandEvent, WarbandState> {
   WarbandBloc(super.initialState) {
     on<UpdateWarband>(_onUpdateWarband);
     on<AddCharacter>(_onAddCharacter);
+    on<DeleteCharacter>(_onDeleteCharacter);
   }
 
   void _onUpdateWarband(UpdateWarband event, Emitter<WarbandState> emit) {
@@ -23,6 +24,14 @@ class WarbandBloc extends HydratedBloc<WarbandEvent, WarbandState> {
     emit(state.copyWith(
         warband: state.warband.copyWith(
             characters: {...state.warband.characters, characterCubit})));
+  }
+
+  void _onDeleteCharacter(DeleteCharacter event, Emitter<WarbandState> emit) {
+    emit(state.copyWith(
+        warband: state.warband.copyWith(
+            characters: Set.from(state.warband.characters)
+              ..removeWhere(
+                  (cubit) => cubit.state.character.id == event.characterID))));
   }
 
   @override
@@ -38,7 +47,7 @@ class WarbandBloc extends HydratedBloc<WarbandEvent, WarbandState> {
     return state.toJson();
   }
 
-    @override
+  @override
   void onError(Object error, StackTrace stackTrace) {
     print('$error, $stackTrace');
     super.onError(error, stackTrace);

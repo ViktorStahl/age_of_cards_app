@@ -16,6 +16,15 @@ class AddCharacter extends WarbandEvent {
   List<Object> get props => [character];
 }
 
+class DeleteCharacter extends WarbandEvent {
+  final String characterID;
+
+  const DeleteCharacter(this.characterID);
+
+  @override
+  List<Object> get props => [characterID];
+}
+
 class UpdateWarband extends WarbandEvent {
   final Warband warband;
 

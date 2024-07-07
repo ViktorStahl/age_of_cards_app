@@ -1,4 +1,5 @@
 import 'package:age_of_cards_app/logic/characters/character_cubit.dart';
+import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 import 'package:uuid/uuid.dart';
@@ -7,25 +8,26 @@ import 'package:uuid/uuid.dart';
 part 'warband.g.dart';
 
 @JsonSerializable(explicitToJson: true)
-class Warband {
-  Warband.create(this.name, this.faction) {
-    created = DateTime.now();
-    id = const Uuid().v4();
+class Warband extends Equatable {
+  factory Warband.create(name, faction) {
+    var created = DateTime.now();
+    var id = const Uuid().v4();
+    return Warband(name: name, faction: faction, characters: const {}, created: created, id: id);
   }
 
-  Warband(
+  const Warband(
       {required this.name,
       required this.faction,
       required this.characters,
       required this.created,
       required this.id});
 
-  String name;
-  late final String faction;
+  final String name;
+  final String faction;
   @JsonKey(fromJson: _fromJson, toJson: _toJson)
-  Set<CharacterCubit> characters = {};
-  late final DateTime created;
-  late final String id;
+  final Set<CharacterCubit> characters;
+  final DateTime created;
+  final String id;
 
   static Set<CharacterCubit> _fromJson(List<dynamic> json) {
     return json
@@ -50,10 +52,6 @@ class Warband {
     characters.add(character);
   }
 
-  void setName(String name) {
-    this.name = name;
-  }
-
   Warband copyWith(
       {String? name,
       String? faction,
@@ -67,4 +65,7 @@ class Warband {
         created: created ?? this.created,
         id: id ?? this.id);
   }
+  
+  @override
+  List<Object> get props => [name, faction, characters, created, id];
 }
