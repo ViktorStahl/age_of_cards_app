@@ -1,3 +1,4 @@
+import 'package:age_of_cards_app/logic/characters/character_cubit.dart';
 import 'package:age_of_cards_app/models/character.dart';
 import 'package:age_of_cards_app/models/warband.dart';
 import 'package:equatable/equatable.dart';
@@ -9,22 +10,37 @@ part 'warband_state.dart';
 class WarbandBloc extends HydratedBloc<WarbandEvent, WarbandState> {
   WarbandBloc(super.initialState) {
     on<UpdateWarband>(_onUpdateWarband);
+    on<AddCharacter>(_onAddCharacter);
   }
 
   void _onUpdateWarband(UpdateWarband event, Emitter<WarbandState> emit) {
-    emit(WarbandState(uuid: state.uuid, warband: event.warband));
+    emit(WarbandState(warband: event.warband));
+  }
+
+  void _onAddCharacter(AddCharacter event, Emitter<WarbandState> emit) {
+    CharacterCubit characterCubit =
+        CharacterCubit(CharacterState(character: event.character));
+    emit(state.copyWith(
+        warband: state.warband.copyWith(
+            characters: {...state.warband.characters, characterCubit})));
   }
 
   @override
-  String get id => state.uuid;
-  
+  String get id => state.warband.id;
+
   @override
   WarbandState? fromJson(Map<String, dynamic> json) {
     return WarbandState.fromJson(json);
   }
-  
+
   @override
   Map<String, dynamic>? toJson(WarbandState state) {
     return state.toJson();
+  }
+
+    @override
+  void onError(Object error, StackTrace stackTrace) {
+    print('$error, $stackTrace');
+    super.onError(error, stackTrace);
   }
 }

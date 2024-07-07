@@ -16,9 +16,9 @@ annotations and can generate files for serializing to and from JSON. The generat
 `<filename>.g.dart`. To generate files run one of the following commands in the project root folder:
 ```bash
 # One time build
-flutter pub run build_runner build --delete-conflicting-outputs
+dart run build_runner build --delete-conflicting-outputs
 # Continuous build with watcher
-flutter pub run build_runner watch --delete-conflicting-outputs
+dart run build_runner watch --delete-conflicting-outputs
 ```
 
 ## (coming) Features

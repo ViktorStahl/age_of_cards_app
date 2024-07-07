@@ -1,4 +1,4 @@
-part of 'warband_collection_bloc.dart';
+part of 'warband_collection_cubit.dart';
 
 @immutable
 sealed class WarbandCollectionEvent extends Equatable {

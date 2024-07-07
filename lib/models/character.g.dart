@@ -7,10 +7,10 @@ part of 'character.dart';
 // **************************************************************************
 
 Character _$CharacterFromJson(Map<String, dynamic> json) => Character(
-      json['name'] as String,
-      $enumDecode(_$CreatureEnumMap, json['creatureType']),
-      DateTime.parse(json['created'] as String),
-      json['id'] as String,
+      name: json['name'] as String,
+      creatureType: $enumDecode(_$CreatureEnumMap, json['creatureType']),
+      created: DateTime.parse(json['created'] as String),
+      id: json['id'] as String,
     );
 
 Map<String, dynamic> _$CharacterToJson(Character instance) => <String, dynamic>{

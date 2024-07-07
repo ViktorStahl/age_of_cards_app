@@ -1,4 +1,4 @@
-import 'package:age_of_cards_app/logic/warbands/warband_collection_bloc.dart';
+import 'package:age_of_cards_app/logic/warbands/warband_collection_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';

@@ -1,19 +1,19 @@
-part of 'character_bloc.dart';
+part of 'character_cubit.dart';
 
-sealed class CharacterState extends Equatable {
-  const CharacterState();
-
-  @override
-  List<Object> get props => [];
-}
-
-final class CharacterInitial extends CharacterState {}
-
-final class CharacterLoaded extends CharacterState {
+class CharacterState extends Equatable {
   final Character character;
 
-  const CharacterLoaded(this.character);
+  const CharacterState({required this.character});
 
   @override
-  get props => [character];
+  List<Object> get props => [character];
+
+  Map<String, dynamic> toJson() => character.toJson();
+
+  factory CharacterState.fromJson(Map<String, dynamic> json) =>
+      CharacterState(character: Character.fromJson(json));
+
+  CharacterState copyWith({Character? character}) {
+    return CharacterState(character: character ?? this.character);
+  }
 }

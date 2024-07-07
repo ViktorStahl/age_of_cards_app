@@ -7,7 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:intl/intl.dart';
 
-import '../../logic/warbands/warband_collection_bloc.dart';
+import '../../logic/warbands/warband_collection_cubit.dart';
 
 class WarbandListScreen extends StatelessWidget {
   const WarbandListScreen({super.key});
@@ -105,7 +105,7 @@ class WarbandCard extends StatelessWidget {
                     icon: const Icon(Icons.delete),
                     iconSize: 24.0,
                     color: Theme.of(context).iconTheme.color,
-                    onPressed: () => _deleteWarband(context, state.uuid),
+                    onPressed: () => _deleteWarband(context, state.warband.id),
                   ),
                 );
               }),

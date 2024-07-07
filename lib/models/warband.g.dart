@@ -7,17 +7,17 @@ part of 'warband.dart';
 // **************************************************************************
 
 Warband _$WarbandFromJson(Map<String, dynamic> json) => Warband(
-      json['id'] as String,
-      json['name'] as String,
-      json['faction'] as String,
-      DateTime.parse(json['created'] as String),
-      (json['_characters'] as List<dynamic>).map((e) => e as String).toList(),
+      name: json['name'] as String,
+      faction: json['faction'] as String,
+      characters: Warband._fromJson(json['characters'] as List),
+      created: DateTime.parse(json['created'] as String),
+      id: json['id'] as String,
     );
 
 Map<String, dynamic> _$WarbandToJson(Warband instance) => <String, dynamic>{
       'name': instance.name,
       'faction': instance.faction,
-      '_characters': instance._characters,
+      'characters': Warband._toJson(instance.characters),
       'created': instance.created.toIso8601String(),
       'id': instance.id,
     };

@@ -7,7 +7,12 @@ part 'character.g.dart';
 
 @JsonSerializable()
 class Character {
-  Character(this.name, this.creatureType, this.created, this.id);
+    Character({
+    required this.name,
+    required this.creatureType,
+    required this.created,
+    required this.id
+  });
 
   Character.create(this.name, this.creatureType) {
     created = DateTime.now();
@@ -26,4 +31,18 @@ class Character {
   /// Calls the private, generated helper method `_$CharacterToJson`.
   Map<String, dynamic> toJson() => _$CharacterToJson(this);
 
+
+  Character copyWith({
+    String? name,
+    Creature? creatureType,
+    DateTime? created,
+    String? id    
+  }) {
+    return Character(
+          name: name ?? this.name,
+      creatureType: creatureType ?? this.creatureType,
+      created: created ?? this.created,
+      id: id ?? this.id
+    );
+  }
 }
