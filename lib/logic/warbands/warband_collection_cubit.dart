@@ -10,7 +10,7 @@ class WarbandCollectionCubit extends HydratedCubit<Set<WarbandBloc>> {
   WarbandCollectionCubit() : super(<WarbandBloc>{});
 
   void addWarband(Warband warband) {
-    emit(Set.from(state)..add(WarbandBloc(WarbandState(warband: warband))));
+    emit(Set.of(state)..add(WarbandBloc(WarbandState(warband: warband))));
   }
 
   void deleteWarband(String warbandID) {
