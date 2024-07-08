@@ -6,6 +6,7 @@ import 'package:age_of_cards_app/models/character.dart';
 import 'package:age_of_cards_app/presentation/util/horizontal_or_line.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 class CharacterDetailScreen extends StatelessWidget {
@@ -105,42 +106,61 @@ class CharacterDetailScreen extends StatelessWidget {
 
   Widget _createArmour(BuildContext context, MapEntry<String, Defence> entry) {
     Defence defence = entry.value;
-    return ListTile(
-      leading: Icon(MdiIcons.tshirtCrew),
-      title: DropdownMenu<String>(
-        initialSelection: defence.text,
-        label: const Text('Type'),
-        dropdownMenuEntries: Defence.values
-            .map((w) => DropdownMenuEntry(value: w.text, label: w.text))
-            .toList(),
-        onSelected: (String? type) {
-          if (type == null) return;
-          context
-              .read<CharacterCubit>()
-              .updateDefence(entry.key, Defence.fromString(type));
-        },
-      ),
-      subtitle: Column(children: [
-        Row(children: _defenceInfo(defence)),
-        Row(children: [
-          Flexible(
-            child: Text(defence.trait ?? ''),
-          )
-        ])
-      ]),
-      onTap: () {},
-    );
+    return Card(
+        child: Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
+      ListTile(
+        leading: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [Icon(MdiIcons.tshirtCrew)]),
+        title: DropdownMenu<String>(
+          initialSelection: defence.text,
+          label: const Text('Type'),
+          dropdownMenuEntries: Defence.values
+              .map((w) => DropdownMenuEntry(value: w.text, label: w.text))
+              .toList(),
+          onSelected: (String? type) {
+            if (type == null) return;
+            context
+                .read<CharacterCubit>()
+                .updateDefence(entry.key, Defence.fromString(type));
+          },
+        ),
+        subtitle: Column(children: [
+          Row(children: _defenceInfo(defence)),
+          if (defence.trait != null) _addTrait(defence.trait as String),
+        ]),
+        trailing: IconButton(
+          icon: const Icon(Icons.delete),
+          onPressed: () {
+            context.read<CharacterCubit>().removeDefence(entry.key);
+          },
+        ),
+        onTap: () {},
+      )
+    ]));
   }
 
   List<Widget> _defenceInfo(Defence defence) {
     List<Widget> info = [];
+
     if (defence.defence > 0) {
-      info.addAll([Icon(MdiIcons.shield), Text('${defence.defence}')]);
+      info.add(Column(
+          children: [Icon(MdiIcons.shield), Text('${defence.defence}')]));
     }
     if (defence.health > 0) {
-      info.addAll([Icon(MdiIcons.heart), Text('${defence.health}')]);
+      info.add(
+          Column(children: [Icon(MdiIcons.heart), Text('${defence.health}')]));
     }
     return info;
+  }
+
+  Widget _addTrait(String trait) {
+    return Row(children: [
+      Expanded(
+        child: Markdown(shrinkWrap: true, data: trait),
+      )
+    ]);
   }
 }
 
@@ -152,53 +172,56 @@ class WeaponTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Weapon weapon = entry.value;
-    return ListTile(
-        leading: Icon(MdiIcons.sword),
-        title: DropdownMenu<String>(
-          initialSelection: weapon.text,
-          label: const Text('Type'),
-          dropdownMenuEntries: Weapon.values
-              .map((w) => DropdownMenuEntry(value: w.text, label: w.text))
-              .toList(),
-          onSelected: (String? type) {
-            if (type == null) return;
-            context
-                .read<CharacterCubit>()
-                .updateWeapon(entry.key, Weapon.fromString(type));
-          },
-        ),
-        subtitle: Column(children: [
-          Row(children: _weaponInfo(weapon)),
-          Row(
-            children: [Flexible(child: Text(weapon.trait ?? ''))],
-          )
-        ]),
-        trailing: IconButton(
-          icon: const Icon(Icons.delete),
-          onPressed: () {
-            context.read<CharacterCubit>().removeWeapon(entry.key);
-          },
-        ),
-        onTap: () {});
+    return Card(
+        child: Column(mainAxisSize: MainAxisSize.min, children: <Widget>[
+      ListTile(
+          leading: Icon(MdiIcons.sword),
+          title: DropdownMenu<String>(
+            initialSelection: weapon.text,
+            label: const Text('Type'),
+            dropdownMenuEntries: Weapon.values
+                .map((w) => DropdownMenuEntry(value: w.text, label: w.text))
+                .toList(),
+            onSelected: (String? type) {
+              if (type == null) return;
+              context
+                  .read<CharacterCubit>()
+                  .updateWeapon(entry.key, Weapon.fromString(type));
+            },
+          ),
+          subtitle: Column(children: [
+            Row(children: _weaponInfo(weapon)),
+            Row(
+              children: [Flexible(child: Text(weapon.trait ?? ''))],
+            )
+          ]),
+          trailing: IconButton(
+            icon: const Icon(Icons.delete),
+            onPressed: () {
+              context.read<CharacterCubit>().removeWeapon(entry.key);
+            },
+          ),
+          onTap: () {})
+    ]));
   }
 
   List<Widget> _weaponInfo(Weapon weapon) {
     List<Widget> info = [];
     if (weapon.attacks > 0) {
       info.add(Column(
-          children: [Icon(MdiIcons.speedometer), Text('${weapon.attacks}')]));
+          children: [Icon(MdiIcons.autorenew), Text('${weapon.attacks}')]));
     }
     if (weapon.power > 0) {
       info.add(
-          Column(children: [Icon(MdiIcons.power), Text('${weapon.power}')]));
+          Column(children: [Icon(MdiIcons.flash), Text('${weapon.power}')]));
     }
-    if (weapon.range > 0) {
+    if (weapon.range > 1) {
       info.add(
           Column(children: [Icon(MdiIcons.bowArrow), Text('${weapon.range}')]));
     }
     if (weapon.piercing != null) {
       info.add(Column(children: [
-        Icon(MdiIcons.arrowLeftCircle),
+        Icon(MdiIcons.shieldOffOutline),
         Text('${weapon.piercing}')
       ]));
     }

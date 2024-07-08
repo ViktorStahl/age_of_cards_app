@@ -62,4 +62,12 @@ class Character extends Equatable {
         defences: defences ?? this.defences,
         weapons: weapons ?? this.weapons);
   }
+
+  int getTotalHealth() {
+    return creatureType.health + (defences.isNotEmpty ? defences.values.map((defence) => defence.health).reduce((total, element) => total + element) : 0);
+  }
+
+  int getTotalDefence() {
+    return creatureType.defence + (defences.isNotEmpty ? defences.values.map((defence) => defence.defence).reduce((total, element) => total + element) : 0);
+  }
 }

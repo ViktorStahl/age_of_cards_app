@@ -82,11 +82,11 @@ class CharacterCard extends StatelessWidget {
                         ]),
                         Column(children: [
                           Icon(MdiIcons.heart),
-                          Text('${character.creatureType.health}'),
+                          Text('${character.getTotalHealth()}'),
                         ]),
                         Column(children: [
                           Icon(MdiIcons.shield),
-                          Text('${character.creatureType.defence}'),
+                          Text('${character.getTotalDefence()}'),
                         ]),
                         Column(children: [
                           Icon(MdiIcons.run),
