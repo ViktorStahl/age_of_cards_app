@@ -23,9 +23,8 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         title: 'Age of Cards',
         theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.cyan),
-          useMaterial3: true,
-        ),
+            colorScheme: ColorScheme.fromSeed(seedColor: Colors.cyan),
+            useMaterial3: true),
         home: const HomeTabController(title: 'Age of Cards'),
       ),
     );

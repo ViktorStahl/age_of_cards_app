@@ -74,11 +74,6 @@ class CharacterDetailScreen extends StatelessWidget {
               )
             ]),
           ),
-          floatingActionButton: FloatingActionButton(
-            onPressed: () {},
-            tooltip: 'Edit Character',
-            child: const Icon(Icons.edit),
-          ),
         );
       },
     );
@@ -190,7 +185,7 @@ class WeaponTile extends StatelessWidget {
             },
           ),
           subtitle: Column(children: [
-            Row(children: _weaponInfo(weapon)),
+            Row(children: weaponInfo(weapon)),
             Row(
               children: [Flexible(child: Text(weapon.trait ?? ''))],
             )
@@ -205,7 +200,7 @@ class WeaponTile extends StatelessWidget {
     ]));
   }
 
-  List<Widget> _weaponInfo(Weapon weapon) {
+  static List<Widget> weaponInfo(Weapon weapon) {
     List<Widget> info = [];
     if (weapon.attacks > 0) {
       info.add(Column(

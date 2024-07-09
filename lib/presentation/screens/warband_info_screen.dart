@@ -1,4 +1,5 @@
 import 'package:age_of_cards_app/constants/creatures.dart';
+import 'package:age_of_cards_app/constants/weapon.dart';
 import 'package:age_of_cards_app/logic/characters/character_cubit.dart';
 import 'package:age_of_cards_app/logic/warband/warband_bloc.dart';
 import 'package:age_of_cards_app/models/character.dart';
@@ -69,31 +70,52 @@ class CharacterCard extends StatelessWidget {
               builder: (context, state) {
                 final character = state.character;
                 return ListTile(
-                    leading: const Icon(Icons.person),
-                    title: Text(
-                      character.name,
-                      style: Theme.of(context).textTheme.headlineMedium,
-                    ),
-                    subtitle: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Column(children: [
-                          Text('${character.creatureType}'),
-                        ]),
-                        Column(children: [
-                          Icon(MdiIcons.heart),
-                          Text('${character.getTotalHealth()}'),
-                        ]),
-                        Column(children: [
-                          Icon(MdiIcons.shield),
-                          Text('${character.getTotalDefence()}'),
-                        ]),
-                        Column(children: [
-                          Icon(MdiIcons.run),
-                          Text('${character.creatureType.move}'),
-                        ]),
-                      ],
-                    ),
+                    title: Row(children: [
+                      Container(
+                          margin: const EdgeInsets.only(right: 8.0),
+                          child: const Icon(Icons.person)),
+                      Text(
+                        character.name,
+                        style: Theme.of(context).textTheme.headlineMedium,
+                      )
+                    ]),
+                    subtitle: Column(children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Column(children: [
+                            Text('${character.creatureType}'),
+                          ]),
+                          Column(children: [
+                            Icon(MdiIcons.heart),
+                            Text('${character.getTotalHealth()}'),
+                          ]),
+                          Column(children: [
+                            Icon(MdiIcons.shield),
+                            Text('${character.getTotalDefence()}'),
+                          ]),
+                          Column(children: [
+                            Icon(MdiIcons.run),
+                            Text('${character.creatureType.move}'),
+                          ]),
+                        ],
+                      ),
+                      DataTable(
+                          columnSpacing: 8,
+                          headingRowHeight: 0,
+                          columns: [
+                            DataColumn(label: Container()),
+                            DataColumn(label: Container())
+                          ],
+                          rows: character.weapons.values.map((Weapon weapon) {
+                            return DataRow(cells: [
+                              DataCell(Text(weapon.text,
+                                  style:
+                                      Theme.of(context).textTheme.bodyLarge)),
+                              DataCell(WeaponInfo(weapon: weapon))
+                            ]);
+                          }).toList())
+                    ]),
                     trailing: IconButton(
                       icon: const Icon(Icons.delete),
                       iconSize: 24.0,
@@ -120,5 +142,18 @@ class CharacterCard extends StatelessWidget {
 
   void _onDelete(BuildContext context, Character character) {
     BlocProvider.of<WarbandBloc>(context).add(DeleteCharacter(character.id));
+  }
+}
+
+class WeaponInfo extends StatelessWidget {
+  const WeaponInfo({super.key, required this.weapon});
+
+  final Weapon weapon;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [...WeaponTile.weaponInfo(weapon)],
+    );
   }
 }
