@@ -34,6 +34,14 @@ const _$CreatureEnumMap = {
   Creature.human: 'Human',
   Creature.spectre: 'Spectre',
   Creature.orc: 'Orc',
+  Creature.ratman: 'Ratman',
+  Creature.gallimimus: 'Gallimimus',
+  Creature.saurusSapiens: 'Saurus Sapiens',
+  Creature.dwarf: 'Dwarf',
+  Creature.mountainTroll: 'Mountain Troll',
+  Creature.woodlandTroll: 'Woodland Troll',
+  Creature.skeleton: 'Skeleton',
+  Creature.zombie: 'Zombie',
 };
 
 const _$DefenceEnumMap = {
