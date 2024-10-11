@@ -70,4 +70,10 @@ class Character extends Equatable {
   int getTotalDefence() {
     return creatureType.defence + (defences.isNotEmpty ? defences.values.map((defence) => defence.defence).reduce((total, element) => total + element) : 0);
   }
+
+  int getTotalCost() {
+    return creatureType.gold
+     + (defences.isEmpty ? 0 : defences.values.map((defence) => defence.gold).reduce((total, element) => total + element))
+     + (weapons.isEmpty ? 0 : weapons.values.map((weapon) => weapon.gold).reduce((total, element) => total + element));
+  }
 }

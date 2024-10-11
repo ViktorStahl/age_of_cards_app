@@ -23,38 +23,51 @@ class CharacterDetailScreen extends StatelessWidget {
           ),
           body: SingleChildScrollView(
             child: Column(children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Column(children: [
-                    DropdownMenu<String>(
-                      initialSelection: character.creatureType.text,
-                      label: const Text('Type'),
-                      dropdownMenuEntries: Creature.values
-                          .map((creature) => DropdownMenuEntry(
-                              value: creature.text, label: creature.text))
-                          .toList(),
-                      onSelected: (String? type) {
-                        if (type == null) return;
-                        context
-                            .read<CharacterCubit>()
-                            .changeCreatureType(Creature.fromString(type));
-                      },
-                    ),
-                  ]),
-                  Column(children: [
-                    Icon(MdiIcons.heart),
-                    Text('${character.creatureType.health}'),
-                  ]),
-                  Column(children: [
-                    Icon(MdiIcons.shield),
-                    Text('${character.creatureType.defence}'),
-                  ]),
-                  Column(children: [
-                    Icon(MdiIcons.run),
-                    Text('${character.creatureType.move}'),
-                  ]),
-                ],
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          DropdownMenu<String>(
+                            width: 240,
+                            initialSelection: character.creatureType.text,
+                            label: const Text('Type'),
+                            dropdownMenuEntries: Creature.values
+                                .map((creature) => DropdownMenuEntry(
+                                    value: creature.text,
+                                    label: creature.text,
+                                    labelWidget: CreatureSelectionWidget(
+                                        creature: creature)))
+                                .toList(),
+                            onSelected: (String? type) {
+                              if (type == null) return;
+                              context.read<CharacterCubit>().changeCreatureType(
+                                  Creature.fromString(type));
+                            },
+                          ),
+                        ]),
+                    Column(children: [
+                      Icon(MdiIcons.heart),
+                      Text('${character.creatureType.health}'),
+                    ]),
+                    Column(children: [
+                      Icon(MdiIcons.shield),
+                      Text('${character.creatureType.defence}'),
+                    ]),
+                    Column(children: [
+                      Icon(MdiIcons.run),
+                      Text('${character.creatureType.move}'),
+                    ]),
+                    Column(children: [
+                      Icon(MdiIcons.gold),
+                      Text('${character.creatureType.gold}'),
+                    ]),
+                  ],
+                ),
               ),
               const HorizontalOrLine(label: 'Weapons'),
               ..._createWeaponTiles(context, character.weapons),
@@ -159,6 +172,49 @@ class CharacterDetailScreen extends StatelessWidget {
   }
 }
 
+class CreatureSelectionWidget extends StatelessWidget {
+  const CreatureSelectionWidget({super.key, required this.creature});
+
+  final Creature creature;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(
+          creature.text,
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+          style: Theme.of(context).textTheme.labelLarge,
+        ),
+        Row(children: [
+          Column(children: [
+            Icon(MdiIcons.heart, size: 16),
+            Text('${creature.health}',
+                style: Theme.of(context).textTheme.labelSmall),
+          ]),
+          Column(children: [
+            Icon(MdiIcons.shield, size: 16),
+            Text('${creature.defence}',
+                style: Theme.of(context).textTheme.labelSmall),
+          ]),
+          Column(children: [
+            Icon(MdiIcons.run, size: 16),
+            Text('${creature.move}',
+                style: Theme.of(context).textTheme.labelSmall),
+          ]),
+          Column(children: [
+            Icon(MdiIcons.gold, size: 16),
+            Text('${creature.gold}',
+                style: Theme.of(context).textTheme.labelSmall),
+          ]),
+        ]),
+      ],
+    );
+  }
+}
+
 class WeaponTile extends StatelessWidget {
   const WeaponTile({super.key, required this.entry});
 
@@ -219,6 +275,9 @@ class WeaponTile extends StatelessWidget {
         Icon(MdiIcons.shieldOffOutline),
         Text('${weapon.piercing}')
       ]));
+    }
+    if (weapon.pairing == true) {
+      info.add(Column(children: [Icon(MdiIcons.swordCross), const Text('')]));
     }
     return info;
   }

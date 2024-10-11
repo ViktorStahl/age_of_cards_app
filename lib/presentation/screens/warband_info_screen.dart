@@ -98,6 +98,10 @@ class CharacterCard extends StatelessWidget {
                             Icon(MdiIcons.run),
                             Text('${character.creatureType.move}'),
                           ]),
+                          Column(children: [
+                            Icon(MdiIcons.gold),
+                            Text('${character.getTotalCost()}'),
+                          ]),
                         ],
                       ),
                       DataTable(
