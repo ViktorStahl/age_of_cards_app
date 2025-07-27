@@ -57,6 +57,7 @@ class WarbandInfoScreen extends StatelessWidget {
                             ? const Text('Add Character')
                             : ListView.builder(
                                 itemCount: characterList.length,
+                                physics: const NeverScrollableScrollPhysics(),
                                 shrinkWrap: true,
                                 itemBuilder: (context, index) {
                                   final characterCubit = characterList[index];
