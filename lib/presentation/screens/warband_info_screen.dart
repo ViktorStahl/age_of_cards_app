@@ -26,8 +26,28 @@ class WarbandInfoScreen extends StatelessWidget {
         var characterList = state.warband.characters.toList();
         return Scaffold(
             appBar: AppBar(
-              title: Text(state.warband.name),
-            ),
+                title: Text(state.warband.name),
+                bottom: PreferredSize(
+                    preferredSize: const Size.fromHeight(40),
+                    child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 2, horizontal: 16),
+                        child: Column(children: [
+                          Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                Text(state.warband.faction),
+                                Column(children: [
+                                  Icon(MdiIcons.heart),
+                                  Text('${getTotalHealth(characterList)}'),
+                                ]),
+                                Column(children: [
+                                  Icon(MdiIcons.gold),
+                                  Text('${getTotalCost(characterList)}'),
+                                ]),
+                              ]),
+                          const Divider()
+                        ])))),
             body: SingleChildScrollView(
                 padding: const EdgeInsets.all(24),
                 child: Center(
@@ -52,6 +72,18 @@ class WarbandInfoScreen extends StatelessWidget {
                 )));
       },
     );
+  }
+
+  int getTotalCost(List<CharacterCubit> characterList) {
+    return characterList
+        .map((char) => char.state.character.getTotalCost())
+        .fold(0, (a, b) => a + b);
+  }
+
+  int getTotalHealth(List<CharacterCubit> characterList) {
+    return characterList
+        .map((char) => char.state.character.getTotalHealth())
+        .fold(0, (a, b) => a + b);
   }
 }
 
@@ -97,6 +129,10 @@ class CharacterCard extends StatelessWidget {
                           Column(children: [
                             Icon(MdiIcons.run),
                             Text('${character.creatureType.move}'),
+                          ]),
+                          Column(children: [
+                            Icon(MdiIcons.gold),
+                            Text('${character.getTotalCost()}'),
                           ]),
                         ],
                       ),
