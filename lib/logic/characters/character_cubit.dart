@@ -20,6 +20,11 @@ class CharacterCubit extends HydratedCubit<CharacterState> {
         character: state.character.copyWith(creatureType: type)));
   }
 
+  changeName(String name) {
+    emit(state.copyWith(
+        character: state.character.copyWith(name: name)));
+  }
+
   addWeapon(Weapon weapon) {
     String uuid = const Uuid().v4();
     updateWeapon(uuid, weapon);

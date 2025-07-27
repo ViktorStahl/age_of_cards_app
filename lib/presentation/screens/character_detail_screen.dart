@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:age_of_cards_app/constants/creatures.dart';
 import 'package:age_of_cards_app/constants/defence.dart';
 import 'package:age_of_cards_app/constants/weapon.dart';
@@ -25,6 +23,24 @@ class CharacterDetailScreen extends StatelessWidget {
           ),
           body: SingleChildScrollView(
             child: Column(children: [
+              Padding(
+                  padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+                  child: Row(
+                    children: [
+                      ConstrainedBox(
+                          constraints:
+                              BoxConstraints.tight(const Size(240, 50)),
+                          child: TextFormField(
+                              decoration: const InputDecoration(
+                                  icon: Icon(Icons.person), labelText: 'Name'),
+                              initialValue: character.name,
+                              onChanged: (name) => {
+                                    context
+                                        .read<CharacterCubit>()
+                                        .changeName(name)
+                                  })),
+                    ],
+                  )),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 child: Row(
