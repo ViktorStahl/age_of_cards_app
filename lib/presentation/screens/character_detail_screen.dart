@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:age_of_cards_app/constants/creatures.dart';
 import 'package:age_of_cards_app/constants/defence.dart';
 import 'package:age_of_cards_app/constants/weapon.dart';
@@ -257,27 +259,36 @@ class WeaponTile extends StatelessWidget {
   }
 
   static List<Widget> weaponInfo(Weapon weapon) {
+    double size = 20;
     List<Widget> info = [];
     if (weapon.attacks > 0) {
-      info.add(Column(
-          children: [Icon(MdiIcons.autorenew), Text('${weapon.attacks}')]));
+      info.add(Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+        Icon(MdiIcons.autorenew, size: size),
+        Text('${weapon.attacks}')
+      ]));
     }
     if (weapon.power > 0) {
-      info.add(
-          Column(children: [Icon(MdiIcons.flash), Text('${weapon.power}')]));
+      info.add(Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+        Icon(MdiIcons.flash, size: size),
+        Text('${weapon.power}')
+      ]));
     }
     if (weapon.range > 1) {
-      info.add(
-          Column(children: [Icon(MdiIcons.bowArrow), Text('${weapon.range}')]));
+      info.add(Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+        Icon(MdiIcons.bowArrow, size: size),
+        Text('${weapon.range}')
+      ]));
     }
     if (weapon.piercing != null) {
-      info.add(Column(children: [
-        Icon(MdiIcons.shieldOffOutline),
+      info.add(Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+        Icon(MdiIcons.shieldOffOutline, size: size),
         Text('${weapon.piercing}')
       ]));
     }
     if (weapon.pairing == true) {
-      info.add(Column(children: [Icon(MdiIcons.swordCross), const Text('')]));
+      info.add(Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [Icon(MdiIcons.swordCross, size: size), const Text('')]));
     }
     return info;
   }
