@@ -10,9 +10,9 @@ enum Creature {
   ratman(text: 'Ratman', health: 4, move: 6, gold: 40),
   orc(text: 'Orc', health: 8, move: 5, gold: 100),
   gallimimus(text: 'Gallimimus', health: 4, move: 6, gold: 45),
-  saurusSapiens(text: 'Saurus Sapiens', health: 4, move: 6, defence: 1, gold: 100),
+  saurusSapiens(text: 'Saurus Sapiens', health: 5, move: 5, defence: 1, gold: 100),
   stormWarrior(text: 'Storm Warrior', health: 7, move: 5, gold: 75),
-  mountainTroll(text: 'Mountain Troll', health: 9, move: 5, defence: 1, gold: 100),
+  mountainTroll(text: 'Mountain Troll', health: 9, move: 5, defence: 1, gold: 115),
   woodlandTroll(text: 'Woodland Troll', health: 9, move: 5, gold: 100),
   ;
 
